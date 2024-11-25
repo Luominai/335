@@ -4,6 +4,19 @@
 bool testQuery(FileAVL* tree, const int &min, const int &max, const std::vector<File*> &expected) {
     std::vector<File*> result = tree->query(min, max); 
 
+    std::cout << std::endl;
+    std::cout << "result: ";
+    for (File* file : result) {
+        std::cout << file->getName() << " ";
+    }
+
+    std::cout << std::endl;
+    std::cout << "expect: ";
+    for (File* file : expected) {
+        std::cout << file->getName() << " ";
+    }
+
+    std::cout << std::endl;
     return result == expected;
 }
 
@@ -27,28 +40,58 @@ int main() {
     std::cout << "query tests" << std::endl;
     // test query
     expected = {f2,f3,f4};
-    std::cout << "1: " << testQuery(tree, 2, 4, expected) << std::endl;
+    if (testQuery(tree, 2, 4, expected)) {
+        std::cout << "passed test 1" << std::endl;
+    }
+    else {
+        std::cout << "failed test 1" << std::endl;
+    }
 
     // test min max reversal
     expected = {f2,f3,f4};
-    std::cout << "2: " << testQuery(tree, 4, 2, expected) << std::endl;
+    if (testQuery(tree, 4, 2, expected)) {
+        std::cout << "passed test 2" << std::endl;
+    }
+    else {
+        std::cout << "failed test 2" << std::endl;
+    }
 
     // test high min
     expected = {};
-    std::cout << "3: " << testQuery(tree, 10, 100, expected) << std::endl;
+    if (testQuery(tree, 10, 100, expected)) {
+        std::cout << "passed test 3" << std::endl;
+    }
+    else {
+        std::cout << "failed test 3" << std::endl;
+    }
 
     // test high max
-    expected = {f1,f2,f3,f4,f5};
-    std::cout << "4: " << testQuery(tree, 0, 100, expected) << std::endl;
+    expected = allFiles;
+    if (testQuery(tree, 0, 100, expected)) {
+        std::cout << "passed test 4" << std::endl;
+    }
+    else {
+        std::cout << "failed test 4" << std::endl;
+    }
 
     // test min == max
     expected = {f2};
-    std::cout << "5: " << testQuery(tree, 2, 2, expected) << std::endl;
+    if (testQuery(tree, 2, 2, expected)) {
+        std::cout << "passed test 5" << std::endl;
+    }
+    else {
+        std::cout << "failed test 5" << std::endl;
+    }
 
     // test null tree
     expected = {};
     FileAVL* nullTree = new FileAVL();
-    std::cout << "6: " << testQuery(nullTree, 1, 5, expected) << std::endl;
+    if (testQuery(nullTree, 1, 5, expected)) {
+        std::cout << "passed test 6" << std::endl;
+    }
+    else {
+        std::cout << "failed test 6" << std::endl;
+    }
 
     
     FileTrie* trie = new FileTrie();

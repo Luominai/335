@@ -15,28 +15,28 @@
  * @param result The vector that is going to store all files found
  * @param current The current node in our traversal
  */
-void queryRecursive(const size_t &min, const size_t &max, std::vector<File*> &result, Node* const &current) {
+inline void queryRecursive(const size_t &min, const size_t &max, std::vector<File*> &result, Node* const &current) {
     // if the current node is null, return
     if (current == nullptr) {
         return;
     }
-    // if the size of the files in the current node are less than min, return
-    if (current->size_ < min) {
-        return;
+    // while the size of the files in the current node are greater than or equal to min, look left
+    if (current->size_ >= min) {
+        // recurse on left
+        queryRecursive(min, max, result, current->left_);
     }
-    // if the size of the files in the current node are more than max, return
-    if (current->size_ > max) {
-        return;
+    // if the size of the files here are within our bounds, add them to result
+    if (current->size_ >= min && current->size_ <= max) {
+        // add all files in this node into result
+        for (File* file : current->files_) {
+            result.push_back(file);
+        }
     }
-
-    // recurse on left
-    queryRecursive(min, max, result, current->left_);
-    // add all files in this node into result
-    for (File* file : current->files_) {
-        result.push_back(file);
+    // while the size of the files in the current node are less than or equal to max, look right
+    if (current->size_ <= max) {
+        // recurse on right
+        queryRecursive(min, max, result, current->right_);
     }
-    // recurse on right
-    queryRecursive(min, max, result, current->right_);
 }
 
 /**
@@ -115,5 +115,5 @@ std::unordered_set<File*> FileTrie::getFilesWithPrefix(const std::string& prefix
 
 // Destructor
 FileTrie::~FileTrie() {
-
+    delete head;
 }
